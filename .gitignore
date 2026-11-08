@@ -8,6 +8,7 @@ config.yaml
 *.sqlite*
 *.db*
 .venv/
+/.vscode/
 work/
 data/
 logs/
