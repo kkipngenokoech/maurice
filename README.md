@@ -4,13 +4,29 @@ Maurice is an open-source personal assistant project for WhatsApp. The goal is t
 
 ## Status
 
-Early prototype. This repository contains an example agent profile. Account connections and end-to-end delivery are still being tested.
+Early prototype. The repository contains the Maurice profile template and a launcher for the Hermes gateway. WhatsApp authentication and end-to-end replies are still being tested.
+
+## Repository layout
+
+- `profiles/maurice/` contains the versioned instructions that define Maurice's behavior.
+- `scripts/` contains the local gateway launcher.
+- `work/` holds the private Hermes profile and local development files. Hermes and its WhatsApp plugin are upstream dependencies.
 
 ## Setup
 
-1. Install [Hermes Agent](https://hermes-agent.nousresearch.com/docs/getting-started/installation) and create a dedicated profile.
-2. Copy `SOUL.example.md` to `SOUL.md` in the profile's data directory. Replace the example timezone and choose your own Notion databases and calendar.
-3. Set up the [WhatsApp Agent Platform plugin](https://hermes-agent.nousresearch.com/marketplace/whatsapp-agent-platform). Keep your API key in your local profile. Enable speech-to-text for voice notes.
-4. Connect your chosen model provider, then authorize Notion, Google, and Granola separately. Start with one test note and verify the saved item before using real data.
+1. Install [Hermes Agent](https://hermes-agent.nousresearch.com/docs/getting-started/installation) and open a terminal at the repository root.
+2. Create the local profile and copy the template without overwriting an existing profile:
+
+   ```sh
+   export HERMES_HOME="$PWD/work/maurice-home"
+   mkdir -p "$HERMES_HOME"
+   cp -n profiles/maurice/SOUL.example.md "$HERMES_HOME/SOUL.md"
+   ```
+
+3. Run `hermes plugins install whatsapp-agent-platform --enable` and use `hermes model` to configure a model provider for this profile. See the [WhatsApp plugin setup](https://hermes-agent.nousresearch.com/marketplace/whatsapp-agent-platform).
+4. Copy `.env.example` to `.secrets.env` and fill in your WhatsApp agent key without quotes. A file containing only the raw key also works.
+5. Run `python3 scripts/run-maurice.py`. Once the gateway reports that WhatsApp authenticated, send Maurice a plain text test message.
+
+After the text test works, enable speech-to-text for voice notes and authorize Notion, Google, and Granola separately.
 
 Use a separate profile for each person. Keep account credentials, local configuration, recordings, transcripts, and logs outside version control.
