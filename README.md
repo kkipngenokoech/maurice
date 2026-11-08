@@ -8,8 +8,8 @@ Early prototype. The repository contains the Maurice profile template and a laun
 
 ## Repository layout
 
-- `profiles/maurice/` contains the versioned instructions that define Maurice's behavior.
-- `scripts/` contains the local gateway launcher.
+- `SOUL.example.md` is the template for Maurice's Hermes profile.
+- `run-maurice.py` starts the local gateway.
 - `work/` holds the private Hermes profile and local development files. Hermes and its WhatsApp plugin are upstream dependencies.
 
 ## Setup
@@ -20,12 +20,12 @@ Early prototype. The repository contains the Maurice profile template and a laun
    ```sh
    export HERMES_HOME="$PWD/work/maurice-home"
    mkdir -p "$HERMES_HOME"
-   cp -n profiles/maurice/SOUL.example.md "$HERMES_HOME/SOUL.md"
+   cp -n SOUL.example.md "$HERMES_HOME/SOUL.md"
    ```
 
 3. Run `hermes plugins install whatsapp-agent-platform --enable` and use `hermes model` to configure a model provider for this profile. See the [WhatsApp plugin setup](https://hermes-agent.nousresearch.com/marketplace/whatsapp-agent-platform).
 4. Copy `.env.example` to `.secrets.env` and fill in your WhatsApp agent key without quotes. A file containing only the raw key also works.
-5. Run `python3 scripts/run-maurice.py`. Once the gateway reports that WhatsApp authenticated, send Maurice a plain text test message.
+5. Run `python3 run-maurice.py`. Once the gateway reports that WhatsApp authenticated, send Maurice a plain text test message.
 
 After the text test works, enable speech-to-text for voice notes and authorize Notion, Google, and Granola separately.
 

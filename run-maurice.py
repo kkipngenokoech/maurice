@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 def main():
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parent
     local_hermes = root / ".venv/bin/hermes"
     hermes = str(local_hermes) if os.access(local_hermes, os.X_OK) else shutil.which("hermes")
     if not hermes:
