@@ -17,7 +17,7 @@ def main():
         raise SystemExit("Set up the Maurice profile first. See README.md.")
 
     plugin = profile / "plugins/whatsapp-agent-platform"
-    bundled_plugin = root / "plugins/whatsapp-agent-platform"
+    bundled_plugin = root / "plugins/whatsapp"
     if not plugin.is_dir() or plugin.resolve() != bundled_plugin:
         raise SystemExit("Link the bundled WhatsApp plugin first. See README.md.")
 

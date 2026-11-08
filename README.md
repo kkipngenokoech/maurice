@@ -11,7 +11,7 @@ Early prototype. WhatsApp text replies have been tested with OpenAI Codex.
 - `SOUL.example.md` is the template for Maurice's Hermes profile.
 - `run-maurice.py` starts the local gateway.
 - `engine/` contains the Hermes source. Edit it here to change the agent or gateway.
-- `plugins/whatsapp-agent-platform/` contains the WhatsApp adapter source.
+- `plugins/whatsapp/` contains the WhatsApp adapter source.
 - `.maurice/` holds the private profile and runtime data.
 
 ## Setup
@@ -28,11 +28,11 @@ Early prototype. WhatsApp text replies have been tested with OpenAI Codex.
    export HERMES_HOME="$PWD/.maurice"
    mkdir -p "$HERMES_HOME/plugins"
    cp -n SOUL.example.md "$HERMES_HOME/SOUL.md"
-   ln -sfn ../../plugins/whatsapp-agent-platform "$HERMES_HOME/plugins/whatsapp-agent-platform"
+   ln -sfn ../../plugins/whatsapp "$HERMES_HOME/plugins/whatsapp-agent-platform"
    pixi run hermes plugins enable whatsapp-agent-platform
    ```
 
-3. Run `pixi run hermes model` to configure a model provider for this profile. See the [bundled WhatsApp adapter guide](plugins/whatsapp-agent-platform/README.md) for how to get the WhatsApp agent key.
+3. Run `pixi run hermes model` to configure a model provider for this profile. See the [bundled WhatsApp adapter guide](plugins/whatsapp/README.md) for how to get the WhatsApp agent key.
 4. Copy `.env.example` to `.secrets.env` and fill in your WhatsApp agent key without quotes. A file containing only the raw key also works.
 5. Run `pixi run maurice`. Once the gateway reports that WhatsApp authenticated, send Maurice a plain text test message.
 

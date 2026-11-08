@@ -1,4 +1,4 @@
-"""hermes_compat.py: one place for Hermes helpers that drift between v2026.9.21 and main."""
+"""Media helper integration with Maurice's bundled Hermes engine."""
 
 from __future__ import annotations
 
@@ -25,17 +25,6 @@ async def test_record_and_lookup_round_trip(tmp_path):
 
 
 @pytest.mark.asyncio
-async def test_works_without_async_store_functions(monkeypatch, tmp_path):
-    # Hermes v2026.9.21 has no record_async / record_media_async.
-    for name in ("record_async", "record_media_async"):
-        monkeypatch.delattr(compat._rss, name, raising=False)
-    media = tmp_path / "a.ogg"
-    media.write_bytes(b"OggS")
-    await compat.record_media("user:1", "wamid.B", [(str(media), "audio/ogg")])
-    assert await compat.lookup_media("user:1", "wamid.B") == [(str(media), "audio/ogg")]
-
-
-@pytest.mark.asyncio
 async def test_concurrent_records_are_not_lost(tmp_path):
     files = []
     for i in range(20):
@@ -54,8 +43,8 @@ async def test_store_failures_are_swallowed(monkeypatch):
     def boom(*_args, **_kwargs):
         raise OSError("disk full")
 
-    monkeypatch.setattr(compat._rss, "record_media", boom)
-    monkeypatch.setattr(compat._rss, "lookup_media", boom)
+    monkeypatch.setattr(compat.rich_sent_store, "record_media", boom)
+    monkeypatch.setattr(compat.rich_sent_store, "lookup_media", boom)
     await compat.record_media("user:1", "wamid.C", [("/x", "image/jpeg")])
     assert await compat.lookup_media("user:1", "wamid.C") == []
 

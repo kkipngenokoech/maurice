@@ -543,19 +543,6 @@ async def test_quoted_media_is_reattached_and_lists_stay_aligned(connected, meta
 
 
 @pytest.mark.asyncio
-async def test_works_without_rich_sent_store_async_functions(connected, meta, monkeypatch):
-    from gateway import rich_sent_store
-
-    for name in ("record_async", "record_media_async", "lookup_async", "lookup_media_async"):
-        monkeypatch.delattr(rich_sent_store, name, raising=False)
-    await deliver(connected, meta, meta.inbound_image("wamid.i1"), offset=2)
-    quote = {"from": CREATOR, "id": "wamid.i1"}
-    await deliver(connected, meta, text_message("wamid.t1", "again", context=quote), offset=3)
-    photo, reply = dispatched(connected)
-    assert reply.media_urls == photo.media_urls
-
-
-@pytest.mark.asyncio
 async def test_every_event_has_aligned_lists(connected, meta):
     messages = [
         meta.inbound_image("wamid.1"),
