@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+SOUL.md
+config.yaml
+*.log
+*.sqlite*
+*.db*
+.venv/
+work/
+data/
+logs/
+recordings/
+transcripts/
+credentials/
