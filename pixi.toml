@@ -1,0 +1,17 @@
+[workspace]
+name = "maurice"
+channels = ["conda-forge"]
+platforms = ["osx-arm64"]
+
+[dependencies]
+python = "3.14.*"
+
+[pypi-dependencies]
+hermes-agent = { path = "engine", editable = true }
+
+[pypi-options.dependency-overrides]
+cryptography = "==50.0.2"
+pillow = "==13.0.0"
+
+[tasks]
+maurice = "python run-maurice.py"

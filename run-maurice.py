@@ -2,21 +2,22 @@
 """Start the local Maurice gateway with its dedicated Hermes profile."""
 
 import os
+import sys
 from pathlib import Path
 
 
 def main():
     root = Path(__file__).resolve().parent
-    hermes = root / ".venv/bin/hermes"
+    hermes = Path(sys.executable).with_name("hermes")
     if not os.access(hermes, os.X_OK):
-        raise SystemExit("Install Maurice's bundled Hermes first. See README.md.")
+        raise SystemExit("Start Maurice with 'pixi run maurice'. See README.md.")
 
-    profile = root / "work/maurice-home"
+    profile = root / ".maurice"
     if not (profile / "SOUL.md").is_file():
         raise SystemExit("Set up the Maurice profile first. See README.md.")
 
     plugin = profile / "plugins/whatsapp-agent-platform"
-    bundled_plugin = root / "vendor/whatsapp-agent-platform"
+    bundled_plugin = root / "plugins/whatsapp-agent-platform"
     if not plugin.is_dir() or plugin.resolve() != bundled_plugin:
         raise SystemExit("Link the bundled WhatsApp plugin first. See README.md.")
 

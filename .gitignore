@@ -8,8 +8,9 @@ config.yaml
 *.sqlite*
 *.db*
 .venv/
+/.pixi/
 /.vscode/
-work/
+/.maurice/
 data/
 logs/
 recordings/
@@ -17,5 +18,5 @@ transcripts/
 credentials/
 
 # Keep the upstream persona templates with the bundled source.
-!/vendor/hermes-agent/SOUL.md
-!/vendor/hermes-agent/docker/SOUL.md
+!/engine/SOUL.md
+!/engine/docker/SOUL.md
