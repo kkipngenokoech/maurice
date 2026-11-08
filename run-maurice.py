@@ -2,20 +2,23 @@
 """Start the local Maurice gateway with its dedicated Hermes profile."""
 
 import os
-import shutil
 from pathlib import Path
 
 
 def main():
     root = Path(__file__).resolve().parent
-    local_hermes = root / ".venv/bin/hermes"
-    hermes = str(local_hermes) if os.access(local_hermes, os.X_OK) else shutil.which("hermes")
-    if not hermes:
-        raise SystemExit("Install Hermes Agent before starting Maurice.")
+    hermes = root / ".venv/bin/hermes"
+    if not os.access(hermes, os.X_OK):
+        raise SystemExit("Install Maurice's bundled Hermes first. See README.md.")
 
     profile = root / "work/maurice-home"
     if not (profile / "SOUL.md").is_file():
         raise SystemExit("Set up the Maurice profile first. See README.md.")
+
+    plugin = profile / "plugins/whatsapp-agent-platform"
+    bundled_plugin = root / "vendor/whatsapp-agent-platform"
+    if not plugin.is_dir() or plugin.resolve() != bundled_plugin:
+        raise SystemExit("Link the bundled WhatsApp plugin first. See README.md.")
 
     secret = root / ".secrets.env"
     try:

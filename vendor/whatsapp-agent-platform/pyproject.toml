@@ -1,0 +1,25 @@
+# This repo is a Hermes directory plugin (installed with `hermes plugins install`), not a
+# pip package. [project].dependencies is what Hermes installs for the plugin: it is empty
+# on purpose — httpx is already a core Hermes dependency. There is no test extra either: on
+# Hermes main any extra or dependency group makes the plugin a package-installing workspace
+# member, resolved against Hermes's own dev pins. Test tooling is installed by hand (README).
+[project]
+name = "hermes-whatsapp-agent-platform"
+version = "0.2.1"
+description = "Meta WhatsApp Agent Platform adapter for Hermes Agent"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "strict"
+addopts = "-p no:cacheprovider --import-mode=importlib"
+pythonpath = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]

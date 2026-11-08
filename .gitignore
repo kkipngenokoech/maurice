@@ -14,3 +14,7 @@ logs/
 recordings/
 transcripts/
 credentials/
+
+# Keep the upstream persona templates with the bundled source.
+!/vendor/hermes-agent/SOUL.md
+!/vendor/hermes-agent/docker/SOUL.md
