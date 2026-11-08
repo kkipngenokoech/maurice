@@ -16,7 +16,7 @@ Early prototype. WhatsApp text replies have been tested with OpenAI Codex.
 
 ## Setup
 
-1. From the repository root, use [Pixi](https://pixi.sh/) to install the bundled Hermes source in editable mode.
+1. On Apple Silicon with macOS 14 or newer, use [Pixi](https://pixi.sh/) to install the bundled Hermes source and local Whisper from the repository root.
 
    ```sh
    pixi install
@@ -36,7 +36,7 @@ Early prototype. WhatsApp text replies have been tested with OpenAI Codex.
 4. Copy `.env.example` to `.secrets.env` and fill in your WhatsApp agent key without quotes. A file containing only the raw key also works.
 5. Run `pixi run maurice`. Once the gateway reports that WhatsApp authenticated, send Maurice a plain text test message.
 
-After the text test works, enable speech-to-text for voice notes and authorize Notion, Google, and Granola separately.
+Send a short voice note after the text test. Local transcription downloads the Whisper model on first use. Authorize Notion, Google, and Granola separately.
 
 Use a separate profile for each person. Keep account credentials, local configuration, recordings, transcripts, and logs outside version control.
 

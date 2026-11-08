@@ -1,13 +1,15 @@
 [workspace]
 name = "maurice"
 channels = ["conda-forge"]
-platforms = ["osx-arm64"]
+platforms = [{ platform = "osx-arm64", macos = "14.0" }]
 
 [dependencies]
 python = "3.14.*"
 
 [pypi-dependencies]
-hermes-agent = { path = "engine", editable = true }
+hermes-agent = { path = "engine", editable = true, extras = ["stt-whisper"] }
+# faster-whisper 1.2.1 passes the legacy metadata_errors argument to av.open.
+av = "<18"
 
 [pypi-options.dependency-overrides]
 cryptography = "==50.0.2"
