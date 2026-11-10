@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const features = [
   ["Voice notes", "Talk it through. Send a voice note when typing would take longer."],
   ["Calendar · in testing", "Ask what’s coming up and get the answer right in the chat."],
@@ -8,7 +10,7 @@ export default function Home() {
   return (
     <div className="site">
       <header className="top">
-        <a className="brand" href="/" aria-label="Maurice home"><span aria-hidden="true">m</span> Maurice</a>
+        <a className="brand" href="/" aria-label="Maurice home"><Logo /> Maurice</a>
         <a className="source" href="https://github.com/kkipngenokoech/maurice">GitHub ↗</a>
       </header>
 
@@ -23,7 +25,7 @@ export default function Home() {
 
           <figure className="demo">
             <div className="paper">
-              <div className="chat-title"><span className="avatar" aria-hidden="true">m</span><span><strong>Maurice</strong><small>Example conversation</small></span></div>
+              <div className="chat-title"><Logo /><span><strong>Maurice</strong><small>Example conversation</small></span></div>
               <div className="chat">
                 <p className="date">MONDAY MORNING</p>
                 <div className="bubble outgoing">What’s on my calendar this morning?</div>
@@ -48,4 +50,8 @@ export default function Home() {
       <footer><span>Maurice</span><a href="https://kipngenokoech.com">Built by Kipngeno Koech ↗</a></footer>
     </div>
   );
+}
+
+function Logo() {
+  return <Image className="logo" src="/maurice-logo-black.png" alt="" width={34} height={34} unoptimized />;
 }

@@ -17,7 +17,7 @@ a:focus-visible { outline: 3px solid #7951a5; outline-offset: 5px; }
 .top, footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .top { padding: 1.65rem 0; border-bottom: 1px solid var(--line); }
 .brand { display: inline-flex; gap: .65rem; align-items: center; font-size: 1.2rem; font-weight: 700; text-decoration: none; }
-.brand span, .avatar { display: grid; place-items: center; width: 2.1rem; height: 2.1rem; border-radius: 50%; color: var(--page); background: var(--ink); font: italic 1.38rem Georgia, serif; }
+.logo { display: block; width: 2.1rem; height: 2.1rem; }
 .source { font-size: .92rem; }
 .hero { display: grid; grid-template-columns: 1.16fr 1fr; align-items: center; gap: clamp(2rem, 5vw, 5rem); padding: clamp(3.5rem, 8vw, 7rem) 0; }
 .label, .date { font: 600 .72rem/1.4 ui-monospace, monospace; text-transform: uppercase; letter-spacing: .1em; }
