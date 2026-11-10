@@ -10,6 +10,7 @@ python = "3.14.*"
 hermes-agent = { path = "engine", editable = true, extras = ["stt-whisper"] }
 # faster-whisper 1.2.1 passes the legacy metadata_errors argument to av.open.
 av = "<18"
+google-auth-oauthlib = "==1.5.0"
 
 [pypi-options.dependency-overrides]
 cryptography = "==50.0.2"

@@ -1,0 +1,7 @@
+name: maurice-google
+version: 0.1.0
+description: Read the primary Google Calendar and connected Gmail inboxes.
+kind: standalone
+provides_tools:
+  - google_calendar_today
+  - google_gmail_unread
