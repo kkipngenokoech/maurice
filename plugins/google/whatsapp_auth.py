@@ -1,14 +1,19 @@
 """Owner-initiated Google OAuth from WhatsApp, with a separate loopback callback."""
 
+import base64
+import json
 import os
+from hashlib import sha256
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from threading import Lock, Thread
-from time import monotonic
+from time import monotonic, sleep
 from urllib.parse import parse_qs, urlsplit
 
 from google_auth_oauthlib.flow import Flow
+from cryptography.exceptions import InvalidTag
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from oauthlib.oauth2 import OAuth2Error
-from requests import RequestException
+from requests import RequestException, post
 
 from . import GMAIL_SCOPE, SCOPES, get_hermes_home, save_credentials, token_path
 
@@ -17,6 +22,45 @@ CALLBACK_PORT = 8766
 _PENDING = {}
 _LOCK = Lock()
 _server = None
+
+
+def _relay_request(redirect, secret, state, action):
+    response = post(
+        redirect, json={"state": state, "action": action},
+        headers={"Authorization": f"Bearer {secret}"},
+        timeout=8, allow_redirects=False,
+    )
+    if response.status_code not in (200, 204):
+        raise RequestException("Google callback relay unavailable")
+    return response
+
+
+def _receive_relay(redirect, secret, state):
+    try:
+        expires, flow, destination, scopes = _PENDING[state]
+        key = sha256(f"maurice-oauth-relay:{secret}".encode()).digest()
+        while monotonic() < expires:
+            sleep(3)
+            try:
+                result = _relay_request(redirect, secret, state, "read")
+            except RequestException:
+                continue
+            if result.status_code == 204:
+                continue
+            if monotonic() >= expires:
+                return
+            sealed = base64.b64decode(result.content, validate=True)
+            payload = AESGCM(key).decrypt(sealed[:12], sealed[12:], state.encode())
+            code = json.loads(payload)["code"]
+            if code:
+                flow.fetch_token(code=code, timeout=15)
+                save_credentials(destination, flow.credentials, scopes)
+            return
+    except (InvalidTag, OAuth2Error, RequestException, ValueError, KeyError, OSError):
+        return
+    finally:
+        with _LOCK:
+            _PENDING.pop(state, None)
 
 
 class Callback(BaseHTTPRequestHandler):
@@ -103,17 +147,27 @@ def connect_google(raw_args, *, platform="", source=None):
         return "Google sign-in needs the Web OAuth client JSON configured on the Mac."
 
     global _server
+    secret = os.environ.get("MAURICE_GOOGLE_RELAY_SECRET")
+    if url.hostname == "maurice.kipngenokoech.com" and not secret:
+        return "The Google sign-in relay is not configured yet."
     with _LOCK:
         now = monotonic()
         for expired in [key for key, item in _PENDING.items() if item[0] <= now]:
             del _PENDING[expired]
         if len(_PENDING) >= 16:
             return "Too many sign-in links are pending. Try again in a few minutes."
-        if _server is None:
+        if secret:
+            try:
+                _relay_request(redirect, secret, state, "start")
+            except RequestException:
+                return "The Google sign-in relay is temporarily unavailable."
+        elif _server is None:
             try:
                 _server = ThreadingHTTPServer(("127.0.0.1", CALLBACK_PORT), Callback)
             except OSError:
                 return "Maurice could not start the Google sign-in callback."
             Thread(target=_server.serve_forever, daemon=True).start()
-        _PENDING[state] = (now + 300, flow, destination, scopes)
+        _PENDING[state] = (monotonic() + 300, flow, destination, scopes)
+        if secret:
+            Thread(target=_receive_relay, args=(redirect, secret, state), daemon=True).start()
     return f"Open this link within five minutes and choose the Google account for {account!r}.\n\n{link}"
