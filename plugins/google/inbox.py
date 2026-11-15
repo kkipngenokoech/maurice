@@ -6,6 +6,7 @@ import re
 from time import monotonic
 
 from . import gmail_unread
+from .agenda import is_today_request
 from .whatsapp_auth import _owner_chat
 
 logger = logging.getLogger(__name__)
@@ -17,14 +18,14 @@ _INBOX_REQUEST = re.compile(
 )
 
 
-def route_inbox(*, event, **kwargs):
+def route_google_request(*, event, **kwargs):
     if event.media_urls:
         return None
     text = (event.text or "").lower().replace("’", "'").strip(" .?!")
+    command = "/calendar" if is_today_request(text) else "/inbox" if _INBOX_REQUEST.fullmatch(text) else None
     source = event.source
-    if (_INBOX_REQUEST.fullmatch(text) and source is not None
-            and _owner_chat(source.platform.value, source)):
-        return {"action": "rewrite", "text": "/inbox"}
+    if command and source is not None and _owner_chat(source.platform.value, source):
+        return {"action": "rewrite", "text": command}
     return None
 
 
