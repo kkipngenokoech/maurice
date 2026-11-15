@@ -12,6 +12,7 @@ Early prototype. WhatsApp text replies have been tested with OpenAI Codex.
 - `run-maurice.py` starts the local gateway.
 - `engine/` contains the Hermes source. Edit it here to change the agent or gateway.
 - `plugins/whatsapp/` contains the WhatsApp adapter source.
+- `plugins/google/` contains the Gmail and Google Calendar integration.
 - `.maurice/` holds the private profile and runtime data.
 
 ## Setup
@@ -42,7 +43,13 @@ Use a separate profile for each person. Keep account credentials, local configur
 
 The bundled sources retain their upstream licenses. Hermes comes from the local snapshot used for the first successful WhatsApp test. The WhatsApp adapter comes from upstream commit `3a57b1da04499279d1af6c7d979c9c2d8b658ce0`.
 
-## Connect Google Calendar and Gmail
+## App integrations
+
+Use a separate integration for each provider. Keep account authorization and credentials separate from the actions the assistant can take. Give each integration only the permissions its actions require. Hermes can load provider plugins and connect to MCP servers, so each integration can use the provider’s official API or MCP endpoint.
+
+Gmail and Calendar use Google OAuth and Google’s APIs directly. The bundled Hermes catalog includes Notion’s official MCP connector, which can be authorized separately for a Notion workspace.
+
+## Connect Google Calendar and Gmail directly
 
 1. In the [Google Cloud Console](https://console.cloud.google.com/), enable the Google Calendar API and Gmail API in one project. Set up the OAuth consent screen, add each account as a test user if applicable, and download a **Desktop app** OAuth client JSON. Keep it outside this repository.
 2. Add `maurice-google` to the `plugins.enabled` list in `.maurice/config.yaml`. Then run these commands from the repository root, replacing the client JSON path with your downloaded file.
@@ -71,3 +78,5 @@ On the machine running Maurice, set up a public HTTPS route for `/google/callbac
 Create a **Web application** OAuth client in your Google Cloud project and register the full public callback URL as an authorized redirect URI. Save its downloaded JSON as `.maurice/credentials/google-web-client.json` with file permissions `0600`. Set `MAURICE_GOOGLE_REDIRECT_URI` to that same HTTPS URL in the environment that starts `pixi run maurice`, then restart Maurice.
 
 In the owner's private WhatsApp chat, send `/connect-google` for Calendar and Gmail or `/connect-google work` for an additional Gmail inbox. Open the link and pick the account in Google. If WhatsApp's in-app browser is rejected by Google, open the link in your phone's browser. The confirmation page tells you when the account is ready.
+
+Send `/inbox` for recent unread Gmail or `/calendar` for today's events in Kigali time. Each command fetches current data directly from Google.
