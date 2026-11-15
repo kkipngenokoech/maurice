@@ -7,7 +7,7 @@ platforms = [{ platform = "osx-arm64", macos = "14.0" }]
 python = "3.14.*"
 
 [pypi-dependencies]
-hermes-agent = { path = "engine", editable = true, extras = ["stt-whisper"] }
+hermes-agent = { path = "engine", editable = true, extras = ["mcp", "stt-whisper"] }
 # faster-whisper 1.2.1 passes the legacy metadata_errors argument to av.open.
 av = "<18"
 google-auth-oauthlib = "==1.5.0"
