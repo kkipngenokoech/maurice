@@ -114,8 +114,11 @@ def gmail_unread(args, **kwargs):
 
 
 def register(ctx):
+    from .inbox import fresh_inbox, route_inbox
     from .whatsapp_auth import connect_google
 
+    ctx.register_command("inbox", fresh_inbox, description="Fetch recent unread Gmail now")
+    ctx.register_hook("pre_gateway_dispatch", route_inbox)
     ctx.register_command("connect-google", connect_google, description="Connect a Google account",
                          args_hint="[account label]")
     tools = (
