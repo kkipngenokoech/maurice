@@ -2,6 +2,22 @@
 
 Maurice is an open-source personal assistant project for WhatsApp. The goal is to turn text and voice notes into Notion notes and tasks, schedule tasks in Google Calendar on request, and send a brief covering connected Gmail inboxes, calendar events, and tasks. Granola captures live meetings separately so Maurice can use the resulting notes.
 
+## How Maurice works
+
+Send Maurice a text or voice note in WhatsApp. It uses the connected apps your request needs and replies in the same chat.
+
+```mermaid
+flowchart TD
+    WhatsApp["WhatsApp · text and voice"] <-->|Requests and replies| Maurice["Maurice"]
+    Maurice --> Gmail["Gmail · In testing<br/>Read unread email across connected inboxes"]
+    Maurice --> Calendar["Google Calendar · In testing<br/>Check upcoming events"]
+    Maurice -.-> Schedule["Google Calendar · Planned<br/>Schedule tasks on request"]
+    Maurice -.-> Notion["Notion · Planned<br/>Save notes and tasks"]
+    Maurice -.-> Granola["Granola · Planned<br/>Pull action items from meeting notes"]
+```
+
+**Planned:** One WhatsApp briefing with unread email, upcoming events, and tasks due.
+
 ## Status
 
 Early prototype. WhatsApp text replies have been tested with OpenAI Codex.
