@@ -42,17 +42,25 @@ h1 em { color: #684890; }
 figcaption { margin: .9rem 0 0; color: var(--muted); text-align: center; font-size: .78rem; }
 .features { padding: 2rem 0 3rem; border-top: 1px solid var(--line); }
 h2 { margin: 0 0 1.4rem; font-size: clamp(1.85rem, 4vw, 2.6rem); letter-spacing: -.04em; }
-.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-article { border-top: 2px solid var(--lavender); padding-top: 1rem; }
+.workflow { background: var(--lavender); border: 1px solid var(--line); border-radius: 1.4rem; padding: clamp(.8rem, 3vw, 1.65rem); }
+.workflow-path { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: .5rem; max-width: 36rem; margin: 0 auto; }
+.workflow-path > div { height: 100%; padding: .75rem; border-radius: .85rem; background: var(--page); text-align: center; }
+.workflow-path div span { display: block; margin-top: .25rem; font-size: .9rem; color: var(--muted); }
+.workflow-arrow, .workflow-connector { font-size: 1.25rem; color: #684890; text-align: center; }
+.workflow-connector { padding: .3rem 0; }
+.feature-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .65rem; margin: 0; padding: 0; list-style: none; }
+.feature-grid li { padding: .85rem; border-radius: .85rem; background: var(--page); }
 h3 { font-size: 1rem; margin: 0; }
-article p { margin: .4rem 0 0; color: var(--muted); }
+.integration-status { color: #684890; font-size: .75rem; font-weight: 600; }
+.feature-grid p, .workflow-brief { color: var(--muted); }
+.feature-grid p { margin: .4rem 0 0; font-size: .9rem; }
 footer { border-top: 1px solid var(--line); padding: 1.2rem 0 2rem; color: var(--muted); font-size: .85rem; }
 
 @media (max-width: 720px) {
   .site { width: calc(100% - 2rem); }
   .hero { grid-template-columns: 1fr; }
   .demo { max-width: 32rem; }
-  .feature-grid { grid-template-columns: 1fr; }
+  .feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

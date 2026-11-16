@@ -1,9 +1,10 @@
 import Image from "next/image";
 
-const features = [
-  ["Voice notes", "Talk it through. Send a voice note when typing would take longer."],
-  ["Calendar · in testing", "Ask what’s coming up and get the answer right in the chat."],
-  ["Gmail · in testing", "Catch up on unread email across the Google accounts you connect."],
+const integrations = [
+  ["Gmail", "In testing", "Catch up on unread email across your connected inboxes."],
+  ["Google Calendar", "In testing", "See what’s on your calendar. Scheduling tasks on request is planned."],
+  ["Notion", "Planned", "Save notes and to-dos from your WhatsApp conversations."],
+  ["Granola", "Planned", "Bring in meeting notes and turn action items into tasks."],
 ];
 
 export default function Home() {
@@ -20,7 +21,7 @@ export default function Home() {
             <p className="label"><span className="dot" /> A personal assistant for WhatsApp</p>
             <h1 id="intro">A little help.<br /><em>One chat away.</em></h1>
             <p className="lede">Ask what’s on your calendar, catch up on email, or send a voice note when your hands are full.</p>
-            <a className="action" href="#features">What Maurice can do <span aria-hidden="true">↓</span></a>
+            <a className="action" href="#features">See how Maurice works <span aria-hidden="true">↓</span></a>
           </div>
 
           <figure className="demo">
@@ -38,12 +39,21 @@ export default function Home() {
         </section>
 
         <section className="features" id="features" aria-labelledby="features-title">
-          <h2 id="features-title">What you can ask about</h2>
-          <div className="feature-grid">
-            {features.map(([title, description]) => (
-              <article key={title}><h3>{title}</h3><p>{description}</p></article>
-            ))}
+          <h2 id="features-title">How Maurice works</h2>
+          <div className="workflow">
+            <div className="workflow-path">
+              <div><strong>WhatsApp</strong><span>Send a text or voice note. Get a reply in chat.</span></div>
+              <span className="workflow-arrow" aria-hidden="true">↔</span>
+              <div><strong>Maurice</strong><span>Uses the connected apps that your request needs.</span></div>
+            </div>
+            <div className="workflow-connector" aria-hidden="true">↓</div>
+            <ul className="feature-grid" aria-label="Integrations">
+              {integrations.map(([title, status, description]) => (
+                <li key={title}><h3>{title}</h3><span className="integration-status">{status}</span><p>{description}</p></li>
+              ))}
+            </ul>
           </div>
+          <p className="workflow-brief"><strong>Planned:</strong> One WhatsApp briefing with unread email, upcoming events, and tasks due.</p>
         </section>
       </main>
 
